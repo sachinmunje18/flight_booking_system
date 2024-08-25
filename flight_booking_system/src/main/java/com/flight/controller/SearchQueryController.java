@@ -37,10 +37,14 @@ public class SearchQueryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SearchQuery> updateSearchQuery(@PathVariable Long id, @RequestBody SearchQuery searchQuery) {
+    public ResponseEntity<String> updateSearchQuery(@PathVariable Long id, @RequestBody SearchQuery searchQuery) {
         SearchQuery updatedSearchQuery = searchQueryService.updateSearchQuery(id, searchQuery);
-        return updatedSearchQuery != null ? ResponseEntity.ok(updatedSearchQuery)
-                                          : ResponseEntity.notFound().build();
+
+        if (updatedSearchQuery != null) {
+            return ResponseEntity.ok("Search query updated successfully!");
+        } else {
+            return ResponseEntity.status(404).body("No matching flight details found or search query not found.");
+        }
     }
 
     @DeleteMapping("/{id}")
